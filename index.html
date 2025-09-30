@@ -6,6 +6,25 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="تطبيق المحامين">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#667eea">
+    
+    <!-- SEO -->
+    <meta name="description" content="تطبيق إدارة القضايا القانونية للمحامين - مجموعة السيد أسامة القانونية">
+    <meta name="keywords" content="محامين, قضايا, استقطاعات, إدارة قانونية">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-192x192.png">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512x512.png">
+    
     <title>تطبيق المحامين - مجموعة السيد أسامة القانونية</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -48,7 +67,6 @@
             background: var(--light);
         }
 
-        /* Login Screen */
         .login-screen {
             display: flex;
             flex-direction: column;
@@ -141,7 +159,7 @@
             background: white;
         }
 
-        .form-group i {
+        .form-group i.input-icon {
             position: absolute;
             left: 1rem;
             top: 3rem;
@@ -149,7 +167,7 @@
             transition: color 0.3s ease;
         }
 
-        .form-group input:focus + i {
+        .form-group input:focus ~ i.input-icon {
             color: var(--primary);
         }
 
@@ -198,7 +216,6 @@
             transform: scale(0.98);
         }
 
-        /* Main App */
         .main-app {
             display: none;
         }
@@ -512,7 +529,6 @@
             transform: scale(0.98);
         }
 
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -656,7 +672,6 @@
             font-size: clamp(0.875rem, 3.5vw, 1rem);
         }
 
-        /* Loading */
         .loading {
             display: none;
             position: fixed;
@@ -688,7 +703,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Notification */
         .notification {
             position: fixed;
             top: 1rem;
@@ -720,7 +734,71 @@
             border-left: 4px solid var(--warning);
         }
 
-        /* Responsive Design */
+        /* Install Banner */
+        .install-banner {
+            position: fixed;
+            bottom: -100px;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+            transition: bottom 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 999;
+        }
+
+        .install-banner.show {
+            bottom: 0;
+        }
+
+        .install-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 1rem;
+        }
+
+        .install-text {
+            flex: 1;
+        }
+
+        .install-text h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .install-text p {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .install-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .install-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .install-btn-primary {
+            background: white;
+            color: var(--primary);
+        }
+
+        .install-btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
         @media (min-width: 768px) {
             .stats-grid {
                 grid-template-columns: repeat(4, 1fr);
@@ -750,9 +828,22 @@
             .case-card {
                 padding: 1rem;
             }
+
+            .install-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .install-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .install-btn {
+                width: 100%;
+            }
         }
 
-        /* Success Animation */
         @keyframes successPulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.1); }
@@ -766,7 +857,6 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- Login Screen -->
         <div class="login-screen" id="loginScreen">
             <div class="login-card">
                 <div class="app-logo">
@@ -779,13 +869,13 @@
                     <div class="form-group">
                         <label>رقم الترخيص</label>
                         <input type="text" id="licenseNumber" placeholder="مثال: BG-2024-001" required>
-                        <i class="fas fa-id-card"></i>
+                        <i class="fas fa-id-card input-icon"></i>
                     </div>
 
                     <div class="form-group">
                         <label>رقم الهاتف</label>
                         <input type="tel" id="phoneNumber" placeholder="+964-770-123-4567" required>
-                        <i class="fas fa-phone"></i>
+                        <i class="fas fa-phone input-icon"></i>
                     </div>
 
                     <button type="submit" class="btn btn-primary">
@@ -796,9 +886,7 @@
             </div>
         </div>
 
-        <!-- Main App -->
         <div class="main-app" id="mainApp">
-            <!-- Header -->
             <div class="app-header">
                 <div class="header-content">
                     <div class="lawyer-info">
@@ -816,7 +904,6 @@
                 </div>
             </div>
 
-            <!-- Stats -->
             <div class="stats-grid">
                 <div class="stat-card blue">
                     <i class="fas fa-briefcase"></i>
@@ -840,32 +927,39 @@
                 </div>
             </div>
 
-            <!-- Filters -->
             <div class="section-header">
                 <h3>قضاياي</h3>
             </div>
 
             <div class="filter-tabs">
-                <div class="filter-tab active" data-filter="all" onclick="filterCases('all')">
-                    الكل
-                </div>
-                <div class="filter-tab" data-filter="تحت المراجعة" onclick="filterCases('تحت المراجعة')">
-                    تحت المراجعة
-                </div>
-                <div class="filter-tab" data-filter="صدر الحكم" onclick="filterCases('صدر الحكم')">
-                    صدر الحكم
-                </div>
-                <div class="filter-tab" data-filter="تنفيذ" onclick="filterCases('تنفيذ')">
-                    تنفيذ
-                </div>
+                <div class="filter-tab active" data-filter="all" onclick="filterCases('all')">الكل</div>
+                <div class="filter-tab" data-filter="تحت المراجعة" onclick="filterCases('تحت المراجعة')">تحت المراجعة</div>
+                <div class="filter-tab" data-filter="صدر الحكم" onclick="filterCases('صدر الحكم')">صدر الحكم</div>
+                <div class="filter-tab" data-filter="تنفيذ" onclick="filterCases('تنفيذ')">تنفيذ</div>
             </div>
 
-            <!-- Cases List -->
             <div class="cases-list" id="casesList"></div>
         </div>
     </div>
 
-    <!-- Modals -->
+    <!-- Install Banner -->
+    <div class="install-banner" id="installBanner">
+        <div class="install-content">
+            <div class="install-text">
+                <h4>ثبّت التطبيق على جهازك</h4>
+                <p>للوصول السريع والاستخدام بدون إنترنت</p>
+            </div>
+            <div class="install-actions">
+                <button class="install-btn install-btn-primary" onclick="installApp()">
+                    <i class="fas fa-download"></i> تثبيت
+                </button>
+                <button class="install-btn install-btn-secondary" onclick="dismissInstall()">
+                    <i class="fas fa-times"></i> لاحقاً
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="modal" id="caseModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -897,12 +991,10 @@
                         <option value="تنفيذ">تنفيذ</option>
                     </select>
                 </div>
-
                 <div class="form-group">
                     <label>ملاحظات التحديث</label>
                     <textarea id="updateNotes" rows="4" style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 1rem; resize: vertical; font-size: 1rem;" placeholder="أضف ملاحظات عن التحديث..."></textarea>
                 </div>
-
                 <button class="btn btn-primary" onclick="saveUpdate()">
                     <i class="fas fa-save"></i>
                     حفظ التحديث
@@ -924,12 +1016,10 @@
                     <label>المبلغ المستقطع (د.ع)</label>
                     <input type="number" id="deductionAmount" placeholder="مثال: 15000" style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 1rem; font-size: 1rem;">
                 </div>
-
                 <div class="form-group">
                     <label>تاريخ الاستقطاع</label>
                     <input type="date" id="deductionDate" style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 1rem; font-size: 1rem;">
                 </div>
-
                 <div class="form-group">
                     <label>المصدر</label>
                     <select id="deductionSource" style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 1rem; font-size: 1rem;">
@@ -939,12 +1029,10 @@
                         <option value="أخرى">أخرى</option>
                     </select>
                 </div>
-
                 <div class="form-group">
                     <label>ملاحظات</label>
                     <textarea id="deductionNotes" rows="3" style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 1rem; resize: vertical; font-size: 1rem;" placeholder="ملاحظات إضافية..."></textarea>
                 </div>
-
                 <button class="btn btn-primary" onclick="saveDeduction()">
                     <i class="fas fa-save"></i>
                     حفظ الاستقطاع
@@ -953,12 +1041,10 @@
         </div>
     </div>
 
-    <!-- Loading -->
     <div class="loading" id="loading">
         <div class="spinner"></div>
     </div>
 
-    <!-- Notification -->
     <div class="notification" id="notification">
         <div id="notificationText"></div>
     </div>
@@ -967,6 +1053,65 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
     <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then((registration) => {
+                        console.log('Service Worker مسجل بنجاح:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('فشل تسجيل Service Worker:', error);
+                    });
+            });
+        }
+
+        // PWA Install Prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install banner after delay
+            setTimeout(() => {
+                const installBanner = document.getElementById('installBanner');
+                if (installBanner) {
+                    installBanner.classList.add('show');
+                }
+            }, 5000);
+        });
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('تم قبول التثبيت');
+                        showNotification('جاري تثبيت التطبيق...', 'success');
+                    }
+                    deferredPrompt = null;
+                    dismissInstall();
+                });
+            }
+        }
+
+        function dismissInstall() {
+            const installBanner = document.getElementById('installBanner');
+            if (installBanner) {
+                installBanner.classList.remove('show');
+            }
+            localStorage.setItem('installDismissed', 'true');
+        }
+
+        // Check if install was dismissed
+        if (localStorage.getItem('installDismissed') === 'true') {
+            const installBanner = document.getElementById('installBanner');
+            if (installBanner) {
+                installBanner.style.display = 'none';
+            }
+        }
+
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDGpAHia_wEmrhnmYjrPf1n1TrAzwEMiAI",
             authDomain: "messageemeapp.firebaseapp.com",
@@ -1203,52 +1348,42 @@
                     <div class="detail-label">رقم الدعوى</div>
                     <div class="detail-value">${caseItem.caseNumber}</div>
                 </div>
-
                 <div class="detail-row">
                     <div class="detail-label">المدعي</div>
                     <div class="detail-value">${caseItem.plaintiffName}</div>
                 </div>
-
                 <div class="detail-row">
                     <div class="detail-label">المدعى عليه</div>
                     <div class="detail-value">${caseItem.defendantName}</div>
                 </div>
-
                 <div class="detail-row">
                     <div class="detail-label">موضوع الدعوى</div>
                     <div class="detail-value">${caseItem.subject}</div>
                 </div>
-
                 <div class="detail-row">
                     <div class="detail-label">مبلغ الدعوى</div>
                     <div class="detail-value" style="color: var(--primary);">${formatNumber(caseItem.amount)} د.ع</div>
                 </div>
-
                 <div class="detail-row">
                     <div class="detail-label">الاستقطاعات</div>
                     <div class="detail-value" style="color: var(--success);">${formatNumber(caseItem.deductions || 0)} د.ع</div>
                 </div>
-
                 <div class="detail-row">
                     <div class="detail-label">المبلغ المتبقي</div>
                     <div class="detail-value" style="color: var(--danger);">${formatNumber(remaining)} د.ع</div>
                 </div>
-
                 <div class="detail-row">
                     <div class="detail-label">المحكمة</div>
                     <div class="detail-value">${caseItem.courtName}</div>
                 </div>
-
                 <div class="detail-row">
                     <div class="detail-label">تاريخ رفع الدعوى</div>
                     <div class="detail-value">${formatDate(caseItem.fileDate)}</div>
                 </div>
-
                 <div class="detail-row">
                     <div class="detail-label">الجلسة القادمة</div>
                     <div class="detail-value">${formatDate(caseItem.nextHearing)}</div>
                 </div>
-
                 ${caseItem.timeline && caseItem.timeline.length > 0 ? `
                     <div class="detail-row">
                         <div class="detail-label">سجل الإجراءات</div>
@@ -1360,7 +1495,6 @@
             showLoading();
 
             try {
-                // إنشاء معرف فريد للاستقطاع
                 const deductionId = Date.now() + '_' + Math.random().toString(36).substr(2, 9);
                 
                 const deduction = {
@@ -1378,10 +1512,8 @@
                     lawyerLicense: currentLawyer.license
                 };
 
-                // حفظ الاستقطاع في المسار الصحيح مع معرف فريد
                 await database.ref(`legal_data/deductions/payments/${deductionId}`).set(deduction);
 
-                // تحديث مجموع الاستقطاعات في القضية
                 const newDeductions = (selectedCase.deductions || 0) + amount;
                 const updates = {
                     deductions: newDeductions,
@@ -1406,7 +1538,6 @@
                 closeDeductionModal();
                 showNotification('تم إضافة الاستقطاع بنجاح', 'success');
                 
-                // تحديث القضايا
                 await loadCases();
             } catch (error) {
                 console.error('خطأ في إضافة الاستقطاع:', error);
