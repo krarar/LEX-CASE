@@ -1,3 +1,4 @@
+
 {
   "name": "lawyer-app",
   "version": "1.0.0",
@@ -15,9 +16,5 @@
     "firebase"
   ],
   "author": "مجموعة السيد أسامة القانونية",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/your-username/lawyer-app.git"
-  }
+  "license": "MIT"
 }
