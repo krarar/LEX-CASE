@@ -2,14 +2,14 @@
   "name": "تطبيق المحامين - مجموعة السيد أسامة القانونية",
   "short_name": "تطبيق المحامين",
   "description": "تطبيق إدارة القضايا القانونية للمحامين",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#667eea",
   "theme_color": "#667eea",
   "orientation": "portrait-primary",
   "lang": "ar",
   "dir": "rtl",
-  "scope": "/",
+  "scope": "./",
   "icons": [
     {
       "src": "icons/icon-72x72.png",
@@ -58,13 +58,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "screenshots/screenshot1.png",
-      "sizes": "540x720",
-      "type": "image/png"
     }
   ],
   "categories": ["productivity", "business", "utilities"],
