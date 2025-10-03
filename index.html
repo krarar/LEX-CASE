@@ -1,29 +1,14 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="تطبيق المحامين">
-    <meta name="application-name" content="تطبيق المحامين">
-    <meta name="theme-color" content="#3b82f6">
-    <meta name="msapplication-TileColor" content="#3b82f6">
-    <meta name="msapplication-navbutton-color" content="#3b82f6">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#6366f1">
     <title>تطبيق المحامين - مجموعة السيد أسامة القانونية</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="manifest" href="manifest.json">
     
-    <!-- Icons for PWA -->
-    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-192x192.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-192x192.png">
-    <link rel="mask-icon" href="icons/icon-192x192.png" color="#3b82f6">
-    
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     
@@ -36,50 +21,59 @@
         }
 
         :root {
-            --primary: #3b82f6;
-            --primary-dark: #2563eb;
-            --primary-light: #dbeafe;
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #e0e7ff;
+            --secondary: #8b5cf6;
             --success: #10b981;
             --success-light: #d1fae5;
             --warning: #f59e0b;
-            --warning-light: #fef3c7;
             --danger: #ef4444;
-            --danger-light: #fee2e2;
-            --info: #8b5cf6;
-            --info-light: #ede9fe;
-            --dark: #1f2937;
-            --gray: #6b7280;
-            --gray-light: #f3f4f6;
-            --light: #f9fafb;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --gray-light: #f1f5f9;
+            --light: #f8fafc;
             --white: #ffffff;
-            --border: #e5e7eb;
+            --border: #e2e8f0;
+        }
+
+        body.dark-mode {
+            --light: #0f172a;
+            --white: #1e293b;
+            --gray-light: #334155;
+            --dark: #f1f5f9;
+            --border: #475569;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-            background: var(--light);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             color: var(--dark);
-            overflow-x: hidden;
             direction: rtl;
+            transition: all 0.3s ease;
         }
 
         .app-container {
-            max-width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
             min-height: 100vh;
             background: var(--light);
-            position: relative;
         }
 
-        /* App Header */
+        /* Header */
         .app-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
             padding: 1rem;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        body.dark-mode .app-header {
+            background: rgba(30, 41, 59, 0.95);
         }
 
         .header-content {
@@ -89,386 +83,282 @@
         }
 
         .app-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .header-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.2s ease;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .header-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.05);
-        }
-
-        /* Status Bar */
-        .status-bar {
-            background: var(--gray-light);
-            padding: 0.5rem 1rem;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.875rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .status-online {
-            color: var(--success);
-        }
-
-        .status-offline {
-            color: var(--danger);
-        }
-
-        .lawyer-badge {
-            background: var(--primary-light);
-            color: var(--primary);
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.5rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        /* Login Screen */
-        .login-screen {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 2rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-        }
-
-        .login-card {
-            background: white;
-            border-radius: 2rem;
-            padding: 2.5rem;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            animation: slideUp 0.5s ease-out;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .app-logo {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .app-logo i {
-            font-size: 4rem;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            color: transparent;
-            margin-bottom: 1rem;
-            display: block;
         }
 
-        .app-logo h1 {
-            font-size: 1.5rem;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-        }
-
-        .app-logo p {
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--dark);
-            font-size: 0.9rem;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 2px solid var(--border);
-            border-radius: 0.75rem;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: var(--white);
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-
-        .btn {
-            background: var(--primary);
-            color: white;
+        .header-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             border: none;
-            padding: 0.875rem 1.5rem;
-            border-radius: 0.75rem;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-        }
-
-        .btn:disabled {
-            background: var(--gray);
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .btn-secondary {
-            background: var(--gray-light);
-            color: var(--dark);
-        }
-
-        .btn-secondary:hover {
-            background: var(--border);
-        }
-
-        .btn-success {
-            background: var(--success);
-        }
-
-        .btn-success:hover {
-            background: #059669;
-        }
-
-        .btn-danger {
-            background: var(--danger);
-        }
-
-        .btn-danger:hover {
-            background: #dc2626;
-        }
-
-        /* Main Content */
-        .main-content {
-            padding: 1rem;
-            min-height: calc(100vh - 140px);
-        }
-
-        /* Search Bar */
-        .search-container {
-            margin-bottom: 1rem;
-            position: relative;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 0.75rem 1rem 0.75rem 3rem;
-            border: 2px solid var(--border);
-            border-radius: 0.75rem;
-            font-size: 1rem;
-            background: white;
-            transition: all 0.3s ease;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-
-        .search-icon {
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--gray);
-            font-size: 1.1rem;
-        }
-
-        /* Cases Grid */
-        .cases-grid {
-            display: grid;
-            gap: 1rem;
-            grid-template-columns: 1fr;
-        }
-
-        .case-card {
-            background: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .case-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .case-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
-
-        .case-number {
-            font-size: 0.875rem;
-            color: var(--primary);
-            font-weight: 600;
-            background: var(--primary-light);
-            padding: 0.25rem 0.75rem;
-            border-radius: 0.5rem;
-        }
-
-        .case-status {
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-align: center;
-        }
-
-        .status-جديدة { background: var(--primary-light); color: var(--primary); }
-        .status-قيد-النظر { background: var(--warning-light); color: var(--warning); }
-        .status-مراجعة { background: var(--info-light); color: var(--info); }
-        .status-مرافعة { background: #fef3c7; color: #d97706; }
-        .status-حكم { background: #e0e7ff; color: #6366f1; }
-        .status-تنفيذ { background: var(--success-light); color: var(--success); }
-        .status-مغلقة { background: #f3f4f6; color: var(--gray); }
-
-        .case-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-            color: var(--dark);
-            line-height: 1.4;
-        }
-
-        .case-info {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .case-info-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-
-        .case-info-item i {
-            width: 16px;
-            color: var(--primary);
-        }
-
-        .case-amount {
-            font-size: 1.3rem;
-            font-weight: 800;
-            color: var(--success);
-            margin-bottom: 1rem;
-            text-align: center;
+            color: white;
             padding: 0.5rem;
-            background: var(--success-light);
-            border-radius: 0.5rem;
-        }
-
-        .case-actions {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .action-btn {
-            background: var(--gray-light);
-            border: none;
-            padding: 0.5rem 0.75rem;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            flex: 1;
-            min-width: 100px;
+            width: 44px;
+            height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.25rem;
-            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            margin-left: 0.5rem;
         }
 
-        .action-btn:hover {
-            transform: translateY(-1px);
-        }
-
-        .action-btn.primary {
-            background: var(--primary);
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            background: var(--danger);
             color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.15rem 0.4rem;
+            border-radius: 10px;
         }
 
-        .action-btn.success {
-            background: var(--success);
-            color: white;
-        }
-
-        /* Modal Styles */
-        .modal-overlay {
+        /* Sidebar */
+        .sidebar-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
             background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -320px;
+            width: 320px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            box-shadow: -4px 0 30px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+        }
+
+        body.dark-mode .sidebar {
+            background: rgba(30, 41, 59, 0.98);
+        }
+
+        .sidebar.active {
+            right: 0;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 2px solid var(--border);
+            background: linear-gradient(135deg, var(--primary-light), rgba(139, 92, 246, 0.1));
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-close {
+            background: var(--white);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: transparent;
+            border: none;
+            width: 100%;
+            text-align: right;
+            color: var(--dark);
+        }
+
+        .sidebar-menu-item:hover {
+            background: var(--primary-light);
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--gray);
+            transition: 0.3s;
+            border-radius: 26px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 1.2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.9rem 1.1rem 0.9rem 3.2rem;
+            border: 2px solid var(--border);
+            border-radius: 1.2rem;
+            font-size: 1rem;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .search-input {
+            background: var(--white);
+        }
+
+        .cases-grid {
+            display: grid;
+            gap: 1.2rem;
+            grid-template-columns: 1fr;
+            margin-top: 1.2rem;
+        }
+
+        @media (min-width: 768px) {
+            .cases-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .cases-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .case-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 1.2rem;
+            padding: 1.4rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        body.dark-mode .case-card {
+            background: rgba(30, 41, 59, 0.95);
+        }
+
+        .case-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 50px rgba(99, 102, 241, 0.15);
+        }
+
+        .case-number {
+            background: linear-gradient(135deg, var(--primary-light), rgba(139, 92, 246, 0.1));
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.8rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .case-status {
+            padding: 0.4rem 0.8rem;
+            border-radius: 1.2rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .status-جديدة { background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: #1e40af; }
+        .status-قيد-النظر { background: linear-gradient(135deg, #fef3c7, #fde68a); color: #92400e; }
+        .status-مراجعة { background: linear-gradient(135deg, #ede9fe, #ddd6fe); color: #6b21a8; }
+        .status-مرافعة { background: linear-gradient(135deg, #fed7aa, #fdba74); color: #9a3412; }
+        .status-حكم { background: linear-gradient(135deg, #e0e7ff, #c7d2fe); color: #3730a3; }
+        .status-تنفيذ { background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #065f46; }
+        .status-مغلقة { background: linear-gradient(135deg, #f3f4f6, #e5e7eb); color: #374151; }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 0.9rem 1.5rem;
+            border-radius: 1rem;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
             z-index: 1000;
             display: flex;
             align-items: center;
@@ -485,118 +375,36 @@
         }
 
         .modal {
-            background: white;
-            border-radius: 1rem;
-            max-width: 90vw;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 1.5rem;
+            max-width: 480px;
             width: 100%;
-            max-width: 500px;
-            max-height: 90vh;
+            max-height: 85vh;
             overflow-y: auto;
-            transform: scale(0.9) translateY(20px);
-            transition: transform 0.3s ease;
         }
 
-        .modal-overlay.active .modal {
-            transform: scale(1) translateY(0);
+        body.dark-mode .modal {
+            background: rgba(30, 41, 59, 0.98);
         }
 
-        .modal-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--gray-light);
-            border-radius: 1rem 1rem 0 0;
+        .form-control {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid var(--border);
+            border-radius: 1rem;
+            font-size: 1rem;
         }
 
-        .modal-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--dark);
+        .hidden {
+            display: none !important;
         }
 
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--gray);
-            cursor: pointer;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.2s ease;
-        }
-
-        .modal-close:hover {
-            background: var(--border);
-            color: var(--dark);
-        }
-
-        .modal-body {
-            padding: 1.5rem;
-        }
-
-        .modal-footer {
-            padding: 1rem 1.5rem;
-            border-top: 1px solid var(--border);
-            display: flex;
-            gap: 0.5rem;
-            justify-content: flex-end;
-            background: var(--gray-light);
-            border-radius: 0 0 1rem 1rem;
-        }
-
-        /* Loading States */
-        .loading {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 3rem 1rem;
-        }
-
-        .spinner {
-            width: 2.5rem;
-            height: 2.5rem;
-            border: 3px solid var(--border);
-            border-top: 3px solid var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: var(--gray);
-        }
-
-        .empty-state i {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            color: var(--border);
-        }
-
-        .empty-state h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            color: var(--dark);
-        }
-
-        /* Floating Action Button */
         .fab {
             position: fixed;
-            bottom: 2rem;
-            left: 2rem;
-            background: var(--success);
+            bottom: 1.5rem;
+            left: 1.5rem;
+            background: linear-gradient(135deg, var(--success), #059669);
             color: white;
             border: none;
             width: 56px;
@@ -604,270 +412,49 @@
             border-radius: 50%;
             font-size: 1.5rem;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
-            transition: all 0.3s ease;
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4);
             z-index: 50;
         }
 
-        .fab:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
-        }
-
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            left: 1rem;
-            background: white;
-            border-radius: 0.75rem;
-            padding: 1rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-            z-index: 2000;
-            transform: translateY(-100px);
-            opacity: 0;
-            transition: all 0.3s ease;
-            border-right: 4px solid var(--primary);
-        }
-
-        .notification.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .notification.success {
-            border-right-color: var(--success);
-        }
-
-        .notification.error {
-            border-right-color: var(--danger);
-        }
-
-        .notification.warning {
-            border-right-color: var(--warning);
-        }
-
-        /* Hidden Elements */
-        .hidden {
-            display: none !important;
-        }
-
-        /* Case Details Styles */
-        .case-detail-row {
+        .login-screen {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .case-detail-row:last-child {
-            border-bottom: none;
-        }
-
-        .case-detail-label {
-            font-weight: 600;
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-
-        .case-detail-value {
-            color: var(--dark);
-            font-weight: 500;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 480px) {
-            .main-content {
-                padding: 0.75rem;
-            }
-            
-            .case-card {
-                padding: 1rem;
-            }
-            
-            .fab {
-                bottom: 1rem;
-                left: 1rem;
-                width: 48px;
-                height: 48px;
-                font-size: 1.25rem;
-            }
-            
-            .modal {
-                margin: 0.5rem;
-                max-width: calc(100vw - 1rem);
-            }
-            
-            .case-actions {
-                flex-direction: column;
-            }
-            
-            .action-btn {
-                flex: none;
-                min-width: auto;
-            }
-
-            .login-card {
-                padding: 2rem;
-                margin: 1rem;
-            }
-
-            .app-title {
-                font-size: 1rem;
-            }
-
-            .header-actions {
-                gap: 0.25rem;
-            }
-
-            .case-amount {
-                font-size: 1.1rem;
-            }
-        }
-
-        /* PWA Install Banner */
-        .install-banner {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: var(--primary);
-            color: white;
-            padding: 1rem;
-            transform: translateY(-100%);
-            transition: transform 0.3s ease;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .install-banner.show {
-            transform: translateY(0);
-        }
-
-        .install-content {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .install-icon {
-            font-size: 1.5rem;
-            flex-shrink: 0;
-        }
-
-        .install-text {
-            flex: 1;
-        }
-
-        .install-text h3 {
-            margin: 0 0 0.25rem 0;
-            font-size: 1rem;
-            font-weight: 600;
-        }
-
-        .install-text p {
-            margin: 0;
-            font-size: 0.875rem;
-            opacity: 0.9;
-        }
-
-        .install-actions {
-            display: flex;
-            gap: 0.5rem;
-            flex-shrink: 0;
-        }
-
-        .install-btn {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.2s ease;
-        }
-
-        .install-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .dismiss-btn {
-            background: none;
-            color: white;
-            border: none;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            cursor: pointer;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            transition: all 0.2s ease;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
         }
 
-        .dismiss-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 2rem;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
 
 <body>
-    <!-- PWA Install Banner -->
-    <div id="install-banner" class="install-banner">
-        <div class="install-content">
-            <div class="install-icon">
-                <i class="fas fa-download"></i>
-            </div>
-            <div class="install-text">
-                <h3>تثبيت التطبيق</h3>
-                <p>ثبت التطبيق على هاتفك للوصول السريع</p>
-            </div>
-            <div class="install-actions">
-                <button class="install-btn" onclick="installApp()">
-                    <i class="fas fa-download"></i>
-                    تثبيت
-                </button>
-                <button class="dismiss-btn" onclick="dismissInstall()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
     <div class="app-container">
         <!-- Login Screen -->
         <div id="login-screen" class="login-screen">
             <div class="login-card">
-                <div class="app-logo">
-                    <i class="fas fa-balance-scale"></i>
-                    <h1>تطبيق المحامين</h1>
-                    <p>مجموعة السيد أسامة القانونية</p>
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <i class="fas fa-balance-scale" style="font-size: 4rem; color: var(--primary);"></i>
+                    <h1 style="margin: 1rem 0 0.5rem;">تطبيق المحامين</h1>
+                    <p style="color: var(--gray);">مجموعة السيد أسامة القانونية</p>
                 </div>
                 
                 <form id="login-form">
-                    <div class="form-group">
-                        <label for="license-number">
-                            <i class="fas fa-id-badge"></i>
-                            رقم الترخيص
-                        </label>
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; margin-bottom: 0.6rem; font-weight: 700;">رقم الترخيص</label>
                         <input type="text" id="license-number" class="form-control" placeholder="أدخل رقم الترخيص" required>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="phone-number">
-                            <i class="fas fa-phone"></i>
-                            رقم الهاتف
-                        </label>
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; margin-bottom: 0.6rem; font-weight: 700;">رقم الهاتف</label>
                         <input type="tel" id="phone-number" class="form-control" placeholder="أدخل رقم الهاتف" required>
                     </div>
                     
@@ -881,96 +468,114 @@
 
         <!-- Main App -->
         <div id="main-app" class="hidden">
-            <!-- App Header -->
+            <!-- Sidebar -->
+            <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <h3 style="font-weight: 800;">القائمة</h3>
+                    <button class="sidebar-close" onclick="closeSidebar()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div style="padding: 1rem;">
+                    <button class="sidebar-menu-item" onclick="refreshData(); closeSidebar();">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>تحديث البيانات</span>
+                    </button>
+                    <button class="sidebar-menu-item" onclick="showAddDeductionModal(); closeSidebar();">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>إضافة استقطاع</span>
+                    </button>
+                    <button class="sidebar-menu-item" onclick="logout(); closeSidebar();">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>تسجيل الخروج</span>
+                    </button>
+                </div>
+
+                <div style="padding: 1rem; border-top: 1px solid var(--border);">
+                    <div class="setting-item">
+                        <span><i class="fas fa-moon"></i> الوضع الليلي</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="dark-mode-toggle" onchange="toggleDarkMode()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <span><i class="fas fa-bell"></i> الإشعارات</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="notifications-toggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Header -->
             <div class="app-header">
                 <div class="header-content">
                     <div class="app-title">
                         <i class="fas fa-balance-scale"></i>
                         تطبيق المحامين
                     </div>
-                    <div class="header-actions">
-                        <button class="header-btn" onclick="refreshData()" title="تحديث البيانات">
-                            <i class="fas fa-sync-alt" id="refresh-icon"></i>
-                        </button>
-                        <button class="header-btn" onclick="logout()" title="تسجيل الخروج">
-                            <i class="fas fa-sign-out-alt"></i>
+                    <div style="display: flex;">
+                        <button class="header-btn" onclick="toggleSidebar()">
+                            <i class="fas fa-bars"></i>
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Status Bar -->
-            <div class="status-bar">
-                <span id="connection-status" class="status-offline">
-                    <i class="fas fa-wifi"></i> غير متصل
-                </span>
-                <span id="lawyer-info" class="lawyer-badge"></span>
+            <div style="background: var(--gray-light); padding: 0.6rem 1rem; font-size: 0.875rem;">
+                <span id="connection-status">غير متصل</span>
+                <span id="lawyer-info" style="float: left; background: var(--primary-light); padding: 0.4rem 0.9rem; border-radius: 20px;"></span>
             </div>
 
             <!-- Main Content -->
             <div class="main-content">
-                <!-- Search Bar -->
-                <div class="search-container">
+                <div style="position: relative; margin-bottom: 1.2rem;">
                     <input type="text" class="search-input" id="search-input" placeholder="البحث في الدعاوى..." onkeyup="searchCases()">
-                    <i class="fas fa-search search-icon"></i>
+                    <i class="fas fa-search" style="position: absolute; right: 1.1rem; top: 50%; transform: translateY(-50%); color: var(--primary);"></i>
                 </div>
 
-                <!-- Loading Indicator -->
-                <div id="loading" class="loading hidden">
-                    <div class="spinner"></div>
+                <div id="loading" class="hidden" style="text-align: center; padding: 3rem;">
+                    <div style="width: 2.5rem; height: 2.5rem; border: 3px solid var(--border); border-top: 3px solid var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto;"></div>
                 </div>
 
-                <!-- Cases Grid -->
-                <div id="cases-container" class="cases-grid">
-                    <!-- Cases will be loaded here -->
-                </div>
+                <div id="cases-container" class="cases-grid"></div>
 
-                <!-- Empty State -->
-                <div id="empty-state" class="empty-state hidden">
-                    <i class="fas fa-folder-open"></i>
+                <div id="empty-state" class="hidden" style="text-align: center; padding: 3rem; color: var(--gray);">
+                    <i class="fas fa-folder-open" style="font-size: 4rem; margin-bottom: 1.2rem;"></i>
                     <h3>لا توجد دعاوى</h3>
-                    <p>لا توجد دعاوى مرتبطة بهذا المحامي حالياً</p>
                 </div>
             </div>
 
-            <!-- Floating Action Button -->
-            <button class="fab" id="add-deduction-fab" onclick="showAddDeductionModal()">
+            <button class="fab" onclick="showAddDeductionModal()">
                 <i class="fas fa-plus"></i>
             </button>
         </div>
     </div>
 
     <!-- Modals -->
-    <!-- Case Details Modal -->
     <div id="case-details-modal" class="modal-overlay">
         <div class="modal">
-            <div class="modal-header">
-                <h3 class="modal-title" id="case-details-title">تفاصيل الدعوى</h3>
-                <button class="modal-close" onclick="closeModal('case-details-modal')">
-                    <i class="fas fa-times"></i>
-                </button>
+            <div style="padding: 1.5rem; border-bottom: 1px solid var(--border);">
+                <h3 id="case-details-title">تفاصيل الدعوى</h3>
+                <button onclick="closeModal('case-details-modal')" style="float: left; background: none; border: none; font-size: 1.5rem; cursor: pointer;">×</button>
             </div>
-            <div class="modal-body" id="case-details-body">
-                <!-- Case details will be loaded here -->
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal('case-details-modal')">إغلاق</button>
-            </div>
+            <div id="case-details-body" style="padding: 1.5rem;"></div>
         </div>
     </div>
 
-    <!-- Update Status Modal -->
     <div id="update-status-modal" class="modal-overlay">
         <div class="modal">
-            <div class="modal-header">
-                <h3 class="modal-title">تحديث حالة الدعوى</h3>
-                <button class="modal-close" onclick="closeModal('update-status-modal')">
-                    <i class="fas fa-times"></i>
-                </button>
+            <div style="padding: 1.5rem; border-bottom: 1px solid var(--border);">
+                <h3>تحديث حالة الدعوى</h3>
+                <button onclick="closeModal('update-status-modal')" style="float: left; background: none; border: none; font-size: 1.5rem; cursor: pointer;">×</button>
             </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>الحالة الجديدة</label>
+            <div style="padding: 1.5rem;">
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.6rem;">الحالة الجديدة</label>
                     <select id="new-status" class="form-control">
                         <option value="جديدة">جديدة</option>
                         <option value="قيد النظر">قيد النظر</option>
@@ -981,72 +586,55 @@
                         <option value="مغلقة">مغلقة</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>ملاحظات (اختياري)</label>
-                    <textarea id="status-notes" class="form-control" rows="3" placeholder="أدخل ملاحظات حول التحديث..."></textarea>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.6rem;">ملاحظات</label>
+                    <textarea id="status-notes" class="form-control" rows="3"></textarea>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal('update-status-modal')">إلغاء</button>
-                <button class="btn btn-success" onclick="updateCaseStatus()">تحديث</button>
+                <button class="btn" onclick="updateCaseStatus()">تحديث</button>
             </div>
         </div>
     </div>
 
-    <!-- Add Deduction Modal -->
     <div id="add-deduction-modal" class="modal-overlay">
         <div class="modal">
-            <div class="modal-header">
-                <h3 class="modal-title">إضافة استقطاع جديد</h3>
-                <button class="modal-close" onclick="closeModal('add-deduction-modal')">
-                    <i class="fas fa-times"></i>
-                </button>
+            <div style="padding: 1.5rem; border-bottom: 1px solid var(--border);">
+                <h3>إضافة استقطاع جديد</h3>
+                <button onclick="closeModal('add-deduction-modal')" style="float: left; background: none; border: none; font-size: 1.5rem; cursor: pointer;">×</button>
             </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>اختر الدعوى</label>
+            <div style="padding: 1.5rem;">
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.6rem;">اختر الدعوى</label>
                     <select id="deduction-case" class="form-control">
                         <option value="">اختر الدعوى...</option>
-                        <!-- Cases will be populated here -->
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>المبلغ المستقطع (د.ع)</label>
-                    <input type="number" id="deduction-amount" class="form-control" placeholder="أدخل المبلغ" min="0">
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.6rem;">المبلغ المستقطع (د.ع)</label>
+                    <input type="number" id="deduction-amount" class="form-control" min="0">
                 </div>
-                <div class="form-group">
-                    <label>تاريخ الاستقطاع</label>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.6rem;">تاريخ الاستقطاع</label>
                     <input type="date" id="deduction-date" class="form-control">
                 </div>
-                <div class="form-group">
-                    <label>المصدر</label>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.6rem;">المصدر</label>
                     <select id="deduction-source" class="form-control">
                         <option value="محكمة البداءة">محكمة البداءة</option>
                         <option value="دائرة التنفيذ">دائرة التنفيذ</option>
                         <option value="محكمة الاستئناف">محكمة الاستئناف</option>
                         <option value="محكمة التمييز">محكمة التمييز</option>
-                        <option value="أخرى">أخرى</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>ملاحظات (اختياري)</label>
-                    <textarea id="deduction-notes" class="form-control" rows="3" placeholder="أدخل ملاحظات حول الاستقطاع..."></textarea>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.6rem;">ملاحظات</label>
+                    <textarea id="deduction-notes" class="form-control" rows="3"></textarea>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal('add-deduction-modal')">إلغاء</button>
-                <button class="btn btn-success" onclick="addDeduction()">إضافة الاستقطاع</button>
+                <button class="btn" onclick="addDeduction()">إضافة الاستقطاع</button>
             </div>
         </div>
     </div>
 
-    <!-- Notification Container -->
-    <div id="notification" class="notification">
-        <div id="notification-content"></div>
-    </div>
-
     <script>
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDrZmZwSOVhonbLWGrHnctkV4tUcT7UNZM",
             authDomain: "legal-department-dbd28.firebaseapp.com",
@@ -1057,38 +645,56 @@
             appId: "1:452600951683:web:2929d22d53a309d947fcb6"
         };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // App State
         let currentLawyer = null;
         let allCases = [];
         let filteredCases = [];
         let selectedCaseId = null;
         let isConnected = false;
 
-        // Initialize App
         document.addEventListener('DOMContentLoaded', function() {
             checkLoginStatus();
             setupConnectionMonitoring();
             setupFormHandlers();
+            loadSettings();
         });
 
-        // Form Handlers
         function setupFormHandlers() {
             document.getElementById('login-form').addEventListener('submit', function(e) {
                 e.preventDefault();
                 login();
             });
-
-            // Set today's date as default for deduction date
             document.getElementById('deduction-date').value = new Date().toISOString().split('T')[0];
         }
 
-        // Connection Monitoring
+        function loadSettings() {
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            document.getElementById('dark-mode-toggle').checked = darkMode;
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+            }
+        }
+
+        function toggleDarkMode() {
+            const isDark = document.getElementById('dark-mode-toggle').checked;
+            document.body.classList.toggle('dark-mode', isDark);
+            localStorage.setItem('darkMode', isDark);
+            alert(isDark ? 'تم تفعيل الوضع الليلي' : 'تم تفعيل الوضع النهاري');
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('sidebar-overlay').classList.toggle('active');
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('sidebar-overlay').classList.remove('active');
+        }
+
         function setupConnectionMonitoring() {
-            // Monitor Firebase connection
             const connectedRef = database.ref('.info/connected');
             connectedRef.on('value', (snapshot) => {
                 isConnected = snapshot.val() === true;
@@ -1098,45 +704,24 @@
                 }
             });
 
-            // Monitor real-time updates from main app
-            if (isConnected) {
-                database.ref('system/lastUpdate').on('value', (snapshot) => {
-                    const updateInfo = snapshot.val();
-                    if (updateInfo && updateInfo.source === 'main_app' && currentLawyer) {
-                        console.log('Received update from main app, refreshing data...');
-                        loadLawyerCases();
-                    }
-                });
-            }
-
-            // Monitor internet connection
-            window.addEventListener('online', () => {
-                updateConnectionStatus();
+            database.ref('system/lastUpdate').on('value', (snapshot) => {
                 if (currentLawyer) {
                     loadLawyerCases();
                 }
-            });
-
-            window.addEventListener('offline', () => {
-                updateConnectionStatus();
             });
         }
 
         function updateConnectionStatus() {
             const statusEl = document.getElementById('connection-status');
             if (isConnected && navigator.onLine) {
-                statusEl.innerHTML = '<i class="fas fa-wifi"></i> متصل بـ Firebase';
-                statusEl.className = 'status-online';
-            } else if (navigator.onLine) {
-                statusEl.innerHTML = '<i class="fas fa-wifi"></i> متصل بالإنترنت';
-                statusEl.className = 'status-offline';
+                statusEl.textContent = 'متصل بـ Firebase';
+                statusEl.style.color = 'var(--success)';
             } else {
-                statusEl.innerHTML = '<i class="fas fa-wifi"></i> غير متصل';
-                statusEl.className = 'status-offline';
+                statusEl.textContent = 'غير متصل';
+                statusEl.style.color = 'var(--danger)';
             }
         }
 
-        // Login Functions
         function checkLoginStatus() {
             const savedLawyer = localStorage.getItem('currentLawyer');
             if (savedLawyer) {
@@ -1155,7 +740,7 @@
             const loginBtn = document.getElementById('login-btn');
 
             if (!licenseNumber || !phoneNumber) {
-                showNotification('يرجى ملء جميع الحقول', 'error');
+                alert('يرجى ملء جميع الحقول');
                 return;
             }
 
@@ -1163,29 +748,23 @@
             loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحقق...';
 
             try {
-                // Search for lawyer in Firebase - try new structure first
                 let lawyersSnapshot = await database.ref('data/lawyers').once('value');
                 let lawyers = lawyersSnapshot.val();
                 
-                // If not found, try old structure
                 if (!lawyers) {
                     lawyersSnapshot = await database.ref('lawyers').once('value');
                     lawyers = lawyersSnapshot.val();
                 }
 
-                console.log('Debug - Raw lawyers data:', lawyers);
-
                 let foundLawyer = null;
                 if (lawyers) {
                     if (Array.isArray(lawyers)) {
-                        // Handle array format
                         lawyers.forEach(lawyer => {
                             if (lawyer && lawyer.license === licenseNumber && lawyer.phone === phoneNumber) {
                                 foundLawyer = lawyer;
                             }
                         });
                     } else {
-                        // Handle object format
                         Object.values(lawyers).forEach(lawyer => {
                             if (lawyer && lawyer.license === licenseNumber && lawyer.phone === phoneNumber) {
                                 foundLawyer = lawyer;
@@ -1194,8 +773,6 @@
                     }
                 }
 
-                console.log('Debug - Found lawyer:', foundLawyer);
-
                 if (foundLawyer) {
                     currentLawyer = foundLawyer;
                     localStorage.setItem('currentLawyer', JSON.stringify(foundLawyer));
@@ -1203,13 +780,13 @@
                     updateLawyerInfo();
                     showMainApp();
                     loadLawyerCases();
-                    showNotification(`مرحباً ${foundLawyer.name}`, 'success');
+                    alert(`مرحباً ${foundLawyer.name}`);
                 } else {
-                    showNotification('بيانات المحامي غير صحيحة', 'error');
+                    alert('بيانات المحامي غير صحيحة');
                 }
             } catch (error) {
                 console.error('Login error:', error);
-                showNotification('خطأ في تسجيل الدخول', 'error');
+                alert('خطأ في تسجيل الدخول');
             }
 
             loginBtn.disabled = false;
@@ -1222,7 +799,7 @@
             allCases = [];
             filteredCases = [];
             showLoginScreen();
-            showNotification('تم تسجيل الخروج بنجاح', 'success');
+            alert('تم تسجيل الخروج بنجاح');
         }
 
         function showLoginScreen() {
@@ -1241,69 +818,48 @@
             }
         }
 
-        // Cases Functions
         async function loadLawyerCases() {
             if (!currentLawyer || !isConnected) return;
 
-            showLoading(true);
+            document.getElementById('loading').classList.remove('hidden');
 
             try {
-                // First try to get from the new data structure
                 let casesSnapshot = await database.ref('data/cases').once('value');
                 let cases = casesSnapshot.val();
                 
-                // If not found, try the old structure
                 if (!cases) {
                     casesSnapshot = await database.ref('cases').once('value');
                     cases = casesSnapshot.val();
                 }
 
                 allCases = [];
-                console.log('Debug - Raw cases data:', cases);
                 
                 if (cases) {
-                    // Check if it's an array or object
                     if (Array.isArray(cases)) {
-                        // Handle array format (new structure)
                         cases.forEach(caseItem => {
                             if (caseItem && caseItem.lawyerName === currentLawyer.name) {
                                 allCases.push(caseItem);
                             }
                         });
                     } else {
-                        // Handle object format (old structure)
                         Object.entries(cases).forEach(([caseId, caseItem]) => {
                             if (caseItem && caseItem.lawyerName === currentLawyer.name) {
-                                // Ensure the case has an ID - use the Firebase key as ID
                                 caseItem.firebaseId = caseId;
-                                // Keep original ID if exists, otherwise use Firebase key
-                                if (!caseItem.id) {
-                                    caseItem.id = caseId;
-                                }
+                                if (!caseItem.id) caseItem.id = caseId;
                                 allCases.push(caseItem);
                             }
                         });
                     }
                 }
-
-                console.log('Debug - Filtered cases for lawyer:', currentLawyer.name, allCases);
-                console.log('Debug - Cases with IDs:', allCases.map(c => ({
-                    id: c.id,
-                    firebaseId: c.firebaseId,
-                    caseNumber: c.caseNumber,
-                    originalId: c.id
-                })));
                 
                 filteredCases = [...allCases];
                 renderCases();
                 populateCaseSelector();
-                showLoading(false);
-
-                console.log(`تم تحميل ${allCases.length} دعوى للمحامي ${currentLawyer.name}`);
+                document.getElementById('loading').classList.add('hidden');
             } catch (error) {
                 console.error('Error loading cases:', error);
-                showNotification('خطأ في تحميل الدعاوى', 'error');
-                showLoading(false);
+                alert('خطأ في تحميل الدعاوى');
+                document.getElementById('loading').classList.add('hidden');
             }
         }
 
@@ -1321,46 +877,33 @@
             emptyState.classList.add('hidden');
 
             container.innerHTML = filteredCases.map(caseItem => {
-                const caseId = caseItem.id || caseItem.firebaseId || caseItem.caseNumber; // Use best available ID
+                const caseId = caseItem.id || caseItem.firebaseId || caseItem.caseNumber;
                 return `
                 <div class="case-card" onclick="showCaseDetails('${caseId}')">
-                    <div class="case-header">
-                        <div class="case-number">${caseItem.caseNumber}</div>
-                        <div class="case-status status-${caseItem.status.replace(/\s+/g, '-')}">${caseItem.status}</div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                        <span class="case-number">${caseItem.caseNumber}</span>
+                        <span class="case-status status-${caseItem.status.replace(/\s+/g, '-')}">${caseItem.status}</span>
                     </div>
-                    <div class="case-title">${caseItem.subject}</div>
-                    <div class="case-info">
-                        <div class="case-info-item">
-                            <i class="fas fa-user"></i>
-                            <span>المدعي: ${caseItem.plaintiffName}</span>
-                        </div>
-                        <div class="case-info-item">
-                            <i class="fas fa-user-tie"></i>
-                            <span>المدعى عليه: ${caseItem.defendantName}</span>
-                        </div>
-                        <div class="case-info-item">
-                            <i class="fas fa-calendar"></i>
-                            <span>تاريخ التسجيل: ${formatDate(caseItem.fileDate)}</span>
-                        </div>
-                        ${caseItem.nextHearing ? `
-                        <div class="case-info-item">
-                            <i class="fas fa-clock"></i>
-                            <span>الجلسة القادمة: ${formatDate(caseItem.nextHearing)}</span>
-                        </div>
-                        ` : ''}
+                    <h3 style="font-size: 1.05rem; font-weight: 800; margin-bottom: 0.9rem;">${caseItem.subject}</h3>
+                    <div style="margin-bottom: 1rem; color: var(--gray); font-size: 0.875rem;">
+                        <div style="margin-bottom: 0.6rem;"><i class="fas fa-user"></i> المدعي: ${caseItem.plaintiffName}</div>
+                        <div style="margin-bottom: 0.6rem;"><i class="fas fa-user-tie"></i> المدعى عليه: ${caseItem.defendantName}</div>
+                        <div><i class="fas fa-calendar"></i> التسجيل: ${formatDate(caseItem.fileDate)}</div>
                     </div>
-                    <div class="case-amount">${formatNumber(caseItem.amount)} د.ع</div>
-                    ${caseItem.deductions && caseItem.deductions > 0 ? `
-                    <div style="background: var(--success-light); color: var(--success); padding: 0.5rem; border-radius: 0.5rem; text-align: center; margin-bottom: 1rem; font-weight: 600; font-size: 0.9rem;">
+                    <div style="background: linear-gradient(135deg, var(--success-light), rgba(16, 185, 129, 0.1)); color: var(--success); padding: 0.8rem; border-radius: 0.9rem; text-align: center; font-weight: 900; font-size: 1.3rem; margin-bottom: 1rem;">
+                        ${formatNumber(caseItem.amount)} د.ع
+                    </div>
+                    ${caseItem.deductions > 0 ? `
+                    <div style="background: linear-gradient(135deg, var(--success-light), rgba(16, 185, 129, 0.1)); color: var(--success); padding: 0.7rem; border-radius: 0.9rem; text-align: center; font-weight: 700; font-size: 0.9rem; margin-bottom: 1rem;">
                         💰 إجمالي الاستقطاعات: ${formatNumber(caseItem.deductions)} د.ع
                     </div>
                     ` : ''}
-                    <div class="case-actions">
-                        <button class="action-btn primary" onclick="event.stopPropagation(); showUpdateStatusModal('${caseId}')">
-                            <i class="fas fa-edit"></i> تحديث الحالة
+                    <div style="display: flex; gap: 0.6rem;">
+                        <button style="flex: 1; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; padding: 0.6rem; border-radius: 0.9rem; cursor: pointer; font-size: 0.85rem;" onclick="event.stopPropagation(); showUpdateStatusModal('${caseId}')">
+                            <i class="fas fa-edit"></i> تحديث
                         </button>
-                        <button class="action-btn success" onclick="event.stopPropagation(); showAddDeductionModal('${caseId}')">
-                            <i class="fas fa-plus"></i> إضافة استقطاع
+                        <button style="flex: 1; background: linear-gradient(135deg, var(--success), #059669); color: white; border: none; padding: 0.6rem; border-radius: 0.9rem; cursor: pointer; font-size: 0.85rem;" onclick="event.stopPropagation(); showAddDeductionModal('${caseId}')">
+                            <i class="fas fa-plus"></i> استقطاع
                         </button>
                     </div>
                 </div>
@@ -1378,8 +921,7 @@
                     caseItem.caseNumber.toLowerCase().includes(searchTerm) ||
                     caseItem.subject.toLowerCase().includes(searchTerm) ||
                     caseItem.plaintiffName.toLowerCase().includes(searchTerm) ||
-                    caseItem.defendantName.toLowerCase().includes(searchTerm) ||
-                    caseItem.status.includes(searchTerm)
+                    caseItem.defendantName.toLowerCase().includes(searchTerm)
                 );
             }
             
@@ -1387,115 +929,45 @@
         }
 
         function refreshData() {
-            const refreshIcon = document.getElementById('refresh-icon');
-            refreshIcon.classList.add('fa-spin');
-            
             loadLawyerCases().then(() => {
-                refreshIcon.classList.remove('fa-spin');
-                showNotification('تم تحديث البيانات', 'success');
-            }).catch(() => {
-                refreshIcon.classList.remove('fa-spin');
-                showNotification('فشل في تحديث البيانات', 'error');
+                alert('تم تحديث البيانات');
             });
         }
 
-        // Case Details Functions
         function showCaseDetails(caseId) {
-            // Try multiple search methods like in addDeduction
-            let caseItem = allCases.find(c => c.id && c.id.toString() === caseId.toString());
-            if (!caseItem) {
-                caseItem = allCases.find(c => c.firebaseId && c.firebaseId.toString() === caseId.toString());
-            }
-            if (!caseItem) {
-                caseItem = allCases.find(c => c.caseNumber === caseId);
-            }
-            if (!caseItem) {
-                caseItem = allCases.find(c => 
-                    (c.id && c.id == caseId) || 
-                    (c.firebaseId && c.firebaseId == caseId) ||
-                    (c.caseNumber && c.caseNumber == caseId)
-                );
-            }
+            let caseItem = allCases.find(c => (c.id && c.id.toString() === caseId.toString()) || (c.firebaseId && c.firebaseId.toString() === caseId.toString()) || c.caseNumber === caseId);
             if (!caseItem) return;
 
-            const modal = document.getElementById('case-details-modal');
-            const title = document.getElementById('case-details-title');
-            const body = document.getElementById('case-details-body');
-
-            title.textContent = `الدعوى رقم ${caseItem.caseNumber}`;
-            
-            body.innerHTML = `
-                <div class="case-detail-row">
-                    <span class="case-detail-label">الموضوع:</span>
-                    <span class="case-detail-value">${caseItem.subject}</span>
+            document.getElementById('case-details-title').textContent = `الدعوى رقم ${caseItem.caseNumber}`;
+            document.getElementById('case-details-body').innerHTML = `
+                <div style="padding: 0.9rem 0; border-bottom: 1px solid var(--border);">
+                    <strong>الموضوع:</strong> ${caseItem.subject}
                 </div>
-                <div class="case-detail-row">
-                    <span class="case-detail-label">المدعي:</span>
-                    <span class="case-detail-value">${caseItem.plaintiffName}</span>
+                <div style="padding: 0.9rem 0; border-bottom: 1px solid var(--border);">
+                    <strong>المدعي:</strong> ${caseItem.plaintiffName}
                 </div>
-                <div class="case-detail-row">
-                    <span class="case-detail-label">المدعى عليه:</span>
-                    <span class="case-detail-value">${caseItem.defendantName}</span>
+                <div style="padding: 0.9rem 0; border-bottom: 1px solid var(--border);">
+                    <strong>المدعى عليه:</strong> ${caseItem.defendantName}
                 </div>
-                <div class="case-detail-row">
-                    <span class="case-detail-label">المبلغ:</span>
-                    <span class="case-detail-value">${formatNumber(caseItem.amount)} د.ع</span>
+                <div style="padding: 0.9rem 0; border-bottom: 1px solid var(--border);">
+                    <strong>المبلغ:</strong> ${formatNumber(caseItem.amount)} د.ع
                 </div>
-                <div class="case-detail-row">
-                    <span class="case-detail-label">الحالة:</span>
-                    <span class="case-detail-value">
-                        <span class="case-status status-${caseItem.status.replace(/\s+/g, '-')}">${caseItem.status}</span>
-                    </span>
+                <div style="padding: 0.9rem 0; border-bottom: 1px solid var(--border);">
+                    <strong>المحكمة:</strong> ${caseItem.courtName}
                 </div>
-                <div class="case-detail-row">
-                    <span class="case-detail-label">المحكمة:</span>
-                    <span class="case-detail-value">${caseItem.courtName}</span>
+                ${caseItem.deductions > 0 ? `
+                <div style="padding: 0.9rem 0;">
+                    <strong>إجمالي الاستقطاعات:</strong> ${formatNumber(caseItem.deductions)} د.ع
                 </div>
-                <div class="case-detail-row">
-                    <span class="case-detail-label">تاريخ التسجيل:</span>
-                    <span class="case-detail-value">${formatDate(caseItem.fileDate)}</span>
-                </div>
-                ${caseItem.nextHearing ? `
-                    <div class="case-detail-row">
-                        <span class="case-detail-label">الجلسة القادمة:</span>
-                        <span class="case-detail-value">${formatDate(caseItem.nextHearing)}</span>
-                    </div>
-                ` : ''}
-                ${caseItem.deductions ? `
-                    <div class="case-detail-row">
-                        <span class="case-detail-label">إجمالي الاستقطاعات:</span>
-                        <span class="case-detail-value">${formatNumber(caseItem.deductions)} د.ع</span>
-                    </div>
-                ` : ''}
-                ${caseItem.notes ? `
-                    <div class="case-detail-row">
-                        <span class="case-detail-label">ملاحظات:</span>
-                        <span class="case-detail-value">${caseItem.notes}</span>
-                    </div>
                 ` : ''}
             `;
 
-            modal.classList.add('active');
+            document.getElementById('case-details-modal').classList.add('active');
         }
 
-        // Update Status Functions
         function showUpdateStatusModal(caseId) {
             selectedCaseId = caseId;
-            // Try multiple search methods like in other functions
-            let caseItem = allCases.find(c => c.id && c.id.toString() === caseId.toString());
-            if (!caseItem) {
-                caseItem = allCases.find(c => c.firebaseId && c.firebaseId.toString() === caseId.toString());
-            }
-            if (!caseItem) {
-                caseItem = allCases.find(c => c.caseNumber === caseId);
-            }
-            if (!caseItem) {
-                caseItem = allCases.find(c => 
-                    (c.id && c.id == caseId) || 
-                    (c.firebaseId && c.firebaseId == caseId) ||
-                    (c.caseNumber && c.caseNumber == caseId)
-                );
-            }
+            let caseItem = allCases.find(c => (c.id && c.id.toString() === caseId.toString()) || (c.firebaseId && c.firebaseId.toString() === caseId.toString()) || c.caseNumber === caseId);
             if (!caseItem) return;
 
             document.getElementById('new-status').value = caseItem.status;
@@ -1510,37 +982,20 @@
             const notes = document.getElementById('status-notes').value.trim();
 
             if (!newStatus) {
-                showNotification('يرجى اختيار الحالة الجديدة', 'error');
+                alert('يرجى اختيار الحالة الجديدة');
                 return;
             }
 
             try {
-                // Find the case with enhanced search
-                let caseItem = allCases.find(c => c.id && c.id.toString() === selectedCaseId.toString());
-                if (!caseItem) {
-                    caseItem = allCases.find(c => c.firebaseId && c.firebaseId.toString() === selectedCaseId.toString());
-                }
-                if (!caseItem) {
-                    caseItem = allCases.find(c => c.caseNumber === selectedCaseId);
-                }
-                if (!caseItem) {
-                    caseItem = allCases.find(c => 
-                        (c.id && c.id == selectedCaseId) || 
-                        (c.firebaseId && c.firebaseId == selectedCaseId) ||
-                        (c.caseNumber && c.caseNumber == selectedCaseId)
-                    );
-                }
-
+                let caseItem = allCases.find(c => (c.id && c.id.toString() === selectedCaseId.toString()) || (c.firebaseId && c.firebaseId.toString() === selectedCaseId.toString()) || c.caseNumber === selectedCaseId);
                 const actualCaseId = caseItem ? (caseItem.firebaseId || caseItem.id || caseItem.caseNumber) : selectedCaseId;
 
                 const updateData = {
                     status: newStatus,
-                    lastModified: new Date().toISOString(),
-                    lastUpdate: new Date().toISOString()
+                    lastModified: new Date().toISOString()
                 };
 
                 if (notes && caseItem) {
-                    // Add to timeline
                     if (!caseItem.timeline) caseItem.timeline = [];
                     caseItem.timeline.push({
                         date: new Date().toISOString().split('T')[0],
@@ -1552,9 +1007,7 @@
                     updateData.notes = notes;
                 }
 
-                // Update case in Firebase - try both paths
                 try {
-                    // Find case in array and update
                     const casesSnapshot = await database.ref('data/cases').once('value');
                     const cases = casesSnapshot.val();
                     if (Array.isArray(cases)) {
@@ -1564,15 +1017,11 @@
                         }
                     }
                 } catch (e) {
-                    console.log('New cases structure update failed, trying old structure');
                     try {
                         await database.ref(`cases/${actualCaseId}`).update(updateData);
-                    } catch (e2) {
-                        console.log('Old cases structure update also failed');
-                    }
+                    } catch (e2) {}
                 }
 
-                // Update local data
                 if (caseItem) {
                     Object.assign(caseItem, updateData);
                     filteredCases = [...allCases];
@@ -1580,59 +1029,34 @@
                 }
 
                 closeModal('update-status-modal');
-                showNotification('تم تحديث حالة الدعوى بنجاح', 'success');
+                alert('تم تحديث حالة الدعوى بنجاح');
             } catch (error) {
                 console.error('Error updating case status:', error);
-                showNotification('خطأ في تحديث حالة الدعوى', 'error');
+                alert('خطأ في تحديث حالة الدعوى');
             }
         }
 
-        // Deduction Functions
         function populateCaseSelector() {
             const selector = document.getElementById('deduction-case');
             selector.innerHTML = '<option value="">اختر الدعوى...</option>';
             
             allCases.forEach(caseItem => {
-                // Use the best available ID: original ID, Firebase ID, or case number
                 const caseId = caseItem.id || caseItem.firebaseId || caseItem.caseNumber;
-                selector.innerHTML += `
-                    <option value="${caseId}">${caseItem.caseNumber} - ${caseItem.plaintiffName}</option>
-                `;
+                selector.innerHTML += `<option value="${caseId}">${caseItem.caseNumber} - ${caseItem.plaintiffName}</option>`;
             });
-            
-            console.log('Debug - Populated case selector with options:', allCases.map(c => ({
-                value: c.id || c.firebaseId || c.caseNumber,
-                display: `${c.caseNumber} - ${c.plaintiffName}`,
-                originalId: c.id,
-                firebaseId: c.firebaseId
-            })));
         }
 
         function showAddDeductionModal(preSelectedCaseId = null) {
-            // Populate case selector first
             populateCaseSelector();
             
             if (preSelectedCaseId) {
                 document.getElementById('deduction-case').value = preSelectedCaseId;
-                console.log('Debug - Pre-selected case ID:', preSelectedCaseId);
             } else {
                 document.getElementById('deduction-case').value = '';
             }
             
-            // Clear other fields
             document.getElementById('deduction-amount').value = '';
             document.getElementById('deduction-notes').value = '';
-            
-            // Debug info
-            console.log('Debug - Current lawyer:', currentLawyer);
-            console.log('Debug - All loaded cases:', allCases);
-            console.log('Debug - Available cases for deduction:', allCases.map(c => ({
-                id: c.id, 
-                caseNumber: c.caseNumber, 
-                plaintiffName: c.plaintiffName,
-                lawyerName: c.lawyerName
-            })));
-            
             document.getElementById('add-deduction-modal').classList.add('active');
         }
 
@@ -1643,57 +1067,20 @@
             const source = document.getElementById('deduction-source').value;
             const notes = document.getElementById('deduction-notes').value.trim();
 
-            console.log('Debug - Selected caseId:', caseId);
-            console.log('Debug - All cases:', allCases);
-
             if (!caseId || !amount || !date || !source) {
-                showNotification('يرجى ملء جميع الحقول المطلوبة', 'error');
+                alert('يرجى ملء جميع الحقول المطلوبة');
                 return;
             }
 
             if (amount <= 0) {
-                showNotification('يرجى إدخال مبلغ صحيح', 'error');
+                alert('يرجى إدخال مبلغ صحيح');
                 return;
             }
 
-            // Try multiple ways to find the case
-            let selectedCase = null;
-            
-            // Method 1: Find by original ID (exact match)
-            selectedCase = allCases.find(c => c.id && c.id.toString() === caseId.toString());
-            
-            // Method 2: Find by Firebase ID 
-            if (!selectedCase) {
-                selectedCase = allCases.find(c => c.firebaseId && c.firebaseId.toString() === caseId.toString());
-            }
-            
-            // Method 3: Find by case number
-            if (!selectedCase) {
-                selectedCase = allCases.find(c => c.caseNumber === caseId);
-            }
-            
-            // Method 4: Find by any ID field (loose comparison)
-            if (!selectedCase) {
-                selectedCase = allCases.find(c => 
-                    (c.id && c.id == caseId) || 
-                    (c.firebaseId && c.firebaseId == caseId) ||
-                    (c.caseNumber && c.caseNumber == caseId)
-                );
-            }
-            
-            console.log('Debug - Selected case:', selectedCase);
-            console.log('Debug - Search attempts for caseId:', caseId);
-            console.log('Debug - Cases available:', allCases.map(c => ({
-                id: c.id,
-                firebaseId: c.firebaseId,
-                caseNumber: c.caseNumber,
-                type_id: typeof c.id,
-                type_firebaseId: typeof c.firebaseId
-            })));
+            let selectedCase = allCases.find(c => (c.id && c.id.toString() === caseId.toString()) || (c.firebaseId && c.firebaseId.toString() === caseId.toString()) || c.caseNumber === caseId);
 
             if (!selectedCase) {
-                console.error('Case not found after all search methods. CaseId:', caseId);
-                showNotification('الدعوى المختارة غير صحيحة', 'error');
+                alert('الدعوى المختارة غير صحيحة');
                 return;
             }
 
@@ -1714,42 +1101,18 @@
                     lawyerName: currentLawyer.name,
                     createdAt: new Date().toISOString(),
                     lastModified: new Date().toISOString(),
-                    // Add additional tracking fields
-                    addedVia: 'mobile_app',
-                    lawyerPhone: currentLawyer.phone || '',
-                    lawyerLicense: currentLawyer.license || ''
+                    addedVia: 'mobile_app'
                 };
 
-                console.log('Debug - Deduction data to save:', deductionData);
+                await database.ref(`data/deductions/${deductionId}`).set(deductionData);
+                await database.ref(`deductions/${deductionId}`).set(deductionData);
 
-                // Save to Firebase deductions
-                console.log('Debug - Saving deduction to Firebase...');
-                
-                // Save to both paths to ensure compatibility
-                const firebaseOperations = [];
-                
-                // Save to new structure
-                firebaseOperations.push(
-                    database.ref(`data/deductions/${deductionId}`).set(deductionData)
-                );
-                
-                // Save to old structure for compatibility
-                firebaseOperations.push(
-                    database.ref(`deductions/${deductionId}`).set(deductionData)
-                );
-                
-                // Wait for all saves to complete
-                await Promise.all(firebaseOperations);
-                console.log('Debug - Deduction saved to both Firebase paths');
-
-                // Update case deductions and timeline
                 const updatedDeductions = (selectedCase.deductions || 0) + amount;
                 const updateData = {
                     deductions: updatedDeductions,
                     lastModified: new Date().toISOString()
                 };
 
-                // Add to timeline
                 if (!selectedCase.timeline) selectedCase.timeline = [];
                 selectedCase.timeline.push({
                     date: date,
@@ -1759,156 +1122,48 @@
                 });
                 updateData.timeline = selectedCase.timeline;
 
-                console.log('Debug - Updating case with actualCaseId:', actualCaseId);
-
-                // Update case in Firebase - comprehensive approach
-                let caseUpdateSuccess = false;
-                
-                // Method 1: Try updating using the Firebase key directly
                 try {
                     await database.ref(`cases/${actualCaseId}`).update(updateData);
-                    console.log('Updated case using direct Firebase key');
-                    caseUpdateSuccess = true;
                 } catch (e) {
-                    console.log('Direct Firebase key update failed:', e.message);
-                }
-
-                // Method 2: If direct update failed, try via data structure
-                if (!caseUpdateSuccess) {
-                    try {
-                        const casesSnapshot = await database.ref('data/cases').once('value');
-                        const cases = casesSnapshot.val();
-                        
-                        if (cases && Array.isArray(cases)) {
-                            // Find case in array
-                            const caseIndex = cases.findIndex(c => 
-                                c.id === actualCaseId || 
-                                c.caseNumber === actualCaseId ||
-                                c.id === selectedCase.id ||
-                                c.caseNumber === selectedCase.caseNumber
-                            );
-                            
-                            if (caseIndex >= 0) {
-                                await database.ref(`data/cases/${caseIndex}`).update(updateData);
-                                console.log('Updated case using data structure array at index:', caseIndex);
-                                caseUpdateSuccess = true;
-                            }
-                        } else if (cases && typeof cases === 'object') {
-                            // Handle object structure
-                            const caseKey = Object.keys(cases).find(key => 
-                                cases[key].id === actualCaseId || 
-                                cases[key].caseNumber === actualCaseId ||
-                                key === actualCaseId
-                            );
-                            
-                            if (caseKey) {
-                                await database.ref(`data/cases/${caseKey}`).update(updateData);
-                                console.log('Updated case using data structure object with key:', caseKey);
-                                caseUpdateSuccess = true;
-                            }
+                    const casesSnapshot = await database.ref('data/cases').once('value');
+                    const cases = casesSnapshot.val();
+                    
+                    if (cases && Array.isArray(cases)) {
+                        const caseIndex = cases.findIndex(c => c.id === actualCaseId || c.caseNumber === actualCaseId);
+                        if (caseIndex >= 0) {
+                            await database.ref(`data/cases/${caseIndex}`).update(updateData);
                         }
-                    } catch (e2) {
-                        console.log('Data structure update failed:', e2.message);
                     }
                 }
 
-                if (!caseUpdateSuccess) {
-                    console.warn('Failed to update case in Firebase, but deduction was saved');
-                }
-
-                // Create notification for the main app
-                const notificationData = {
-                    id: `deduction_${deductionId}`,
-                    type: 'new_deduction',
-                    title: '💰 استقطاع جديد من التطبيق المحمول',
-                    message: `الدعوى ${selectedCase.caseNumber} - ${selectedCase.plaintiffName}`,
-                    details: `تم استقطاع ${formatNumber(amount)} د.ع من ${source} بواسطة ${currentLawyer.name}`,
-                    priority: 'medium',
-                    actionText: 'عرض الاستقطاع',
-                    caseId: selectedCase.caseNumber,
-                    deductionId: deductionId,
-                    read: false,
-                    createdAt: new Date().toISOString()
-                };
-
-                // Save notification to Firebase
-                try {
-                    await database.ref(`notifications/${notificationData.id}`).set(notificationData);
-                    await database.ref(`data/notifications/${notificationData.id}`).set(notificationData);
-                    console.log('Debug - Notification created for main app');
-                } catch (e) {
-                    console.log('Failed to create notification:', e.message);
-                }
-
-                // Update local data
                 selectedCase.deductions = updatedDeductions;
                 selectedCase.lastModified = new Date().toISOString();
                 selectedCase.timeline = updateData.timeline;
 
-                // Update lawyer's case statistics if needed
-                try {
-                    const lawyerRef = database.ref('lawyers').orderByChild('name').equalTo(currentLawyer.name);
-                    const lawyerSnapshot = await lawyerRef.once('value');
-                    
-                    if (lawyerSnapshot.exists()) {
-                        const lawyerData = lawyerSnapshot.val();
-                        const lawyerId = Object.keys(lawyerData)[0];
-                        await database.ref(`lawyers/${lawyerId}/lastActivity`).set(new Date().toISOString());
-                        console.log('Updated lawyer activity timestamp');
-                    }
-                } catch (e) {
-                    console.log('Failed to update lawyer statistics:', e.message);
-                }
-
-                // Trigger refresh in main app via Firebase
-                try {
-                    await database.ref('system/lastUpdate').set({
-                        timestamp: new Date().toISOString(),
-                        source: 'mobile_app',
-                        action: 'deduction_added',
-                        lawyerName: currentLawyer.name
-                    });
-                } catch (e) {
-                    console.log('Failed to trigger main app refresh:', e.message);
-                }
+                await database.ref('system/lastUpdate').set({
+                    timestamp: new Date().toISOString(),
+                    source: 'mobile_app',
+                    action: 'deduction_added',
+                    lawyerName: currentLawyer.name
+                });
 
                 renderCases();
                 closeModal('add-deduction-modal');
-                showNotification(`تم إضافة الاستقطاع بنجاح - ${formatNumber(amount)} د.ع`, 'success');
+                alert(`تم إضافة الاستقطاع بنجاح - ${formatNumber(amount)} د.ع`);
                 
-                // Auto refresh data to show latest changes
                 setTimeout(() => {
                     loadLawyerCases();
                 }, 1000);
                 
             } catch (error) {
                 console.error('Error adding deduction:', error);
-                showNotification('خطأ في إضافة الاستقطاع', 'error');
+                alert('خطأ في إضافة الاستقطاع');
             }
         }
 
-        // Modal Functions
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
             selectedCaseId = null;
-        }
-
-        // Utility Functions
-        function showLoading(show) {
-            document.getElementById('loading').classList.toggle('hidden', !show);
-        }
-
-        function showNotification(message, type = 'info') {
-            const notification = document.getElementById('notification');
-            const content = document.getElementById('notification-content');
-            
-            content.textContent = message;
-            notification.className = `notification ${type}`;
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
         }
 
         function formatNumber(number) {
@@ -1918,189 +1173,20 @@
         function formatDate(dateString) {
             if (!dateString) return '-';
             const date = new Date(dateString);
-            return date.toLocaleDateString('ar-IQ', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit'
-            });
+            return date.toLocaleDateString('ar-IQ');
         }
 
-        // Close modals when clicking outside
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('modal-overlay')) {
                 e.target.classList.remove('active');
-                selectedCaseId = null;
             }
         });
 
-        // Handle back button
-        window.addEventListener('popstate', function(e) {
-            const activeModal = document.querySelector('.modal-overlay.active');
-            if (activeModal) {
-                activeModal.classList.remove('active');
-                selectedCaseId = null;
-            }
-        });
-
-        // Auto-refresh every 5 minutes
         setInterval(() => {
             if (currentLawyer && isConnected) {
                 loadLawyerCases();
             }
         }, 5 * 60 * 1000);
-
-        // Error handling for unhandled promise rejections
-        window.addEventListener('unhandledrejection', function(event) {
-            console.error('Unhandled promise rejection:', event.reason);
-            // Prevent the error from appearing in console as unhandled
-            event.preventDefault();
-        });
-
-        // PWA Support with Enhanced Installation
-        let deferredPrompt = null;
-        let isInstallable = false;
-
-        // Service Worker Registration
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', async () => {
-                try {
-                    const registration = await navigator.serviceWorker.register('./service-worker.js');
-                    console.log('✅ Service Worker مسجل بنجاح:', registration.scope);
-                    
-                    // Listen for updates
-                    registration.addEventListener('updatefound', () => {
-                        const newWorker = registration.installing;
-                        newWorker.addEventListener('statechange', () => {
-                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                showNotification('تحديث جديد متاح. سيتم تطبيقه عند إعادة تشغيل التطبيق', 'info');
-                            }
-                        });
-                    });
-                } catch (error) {
-                    console.log('⚠️ فشل تسجيل Service Worker:', error);
-                }
-            });
-        }
-
-        // PWA Install Prompt Handler
-        window.addEventListener('beforeinstallprompt', (e) => {
-            console.log('💾 PWA install prompt available');
-            e.preventDefault();
-            deferredPrompt = e;
-            isInstallable = true;
-            
-            // Show install banner after 3 seconds if not previously dismissed
-            if (localStorage.getItem('pwa-install-dismissed') !== 'true') {
-                setTimeout(() => {
-                    showInstallBanner();
-                }, 3000);
-            }
-        });
-
-        // Handle successful installation
-        window.addEventListener('appinstalled', (e) => {
-            console.log('✅ PWA تم تثبيته بنجاح');
-            hideInstallBanner();
-            showNotification('تم تثبيت التطبيق بنجاح!', 'success');
-            deferredPrompt = null;
-            isInstallable = false;
-        });
-
-        // PWA Install Functions
-        function showInstallBanner() {
-            const banner = document.getElementById('install-banner');
-            if (banner && isInstallable) {
-                banner.classList.add('show');
-            }
-        }
-
-        function hideInstallBanner() {
-            const banner = document.getElementById('install-banner');
-            if (banner) {
-                banner.classList.remove('show');
-            }
-        }
-
-        async function installApp() {
-            if (!deferredPrompt) {
-                showNotification('لا يمكن تثبيت التطبيق في الوقت الحالي', 'warning');
-                return;
-            }
-
-            try {
-                // Show the install prompt
-                deferredPrompt.prompt();
-                
-                // Wait for the user's response
-                const { outcome } = await deferredPrompt.userChoice;
-                
-                if (outcome === 'accepted') {
-                    console.log('✅ المستخدم قبل التثبيت');
-                    showNotification('جاري تثبيت التطبيق...', 'success');
-                } else {
-                    console.log('❌ المستخدم رفض التثبيت');
-                    showNotification('تم إلغاء التثبيت', 'info');
-                }
-                
-                deferredPrompt = null;
-                isInstallable = false;
-                hideInstallBanner();
-                
-            } catch (error) {
-                console.error('خطأ في تثبيت التطبيق:', error);
-                showNotification('حدث خطأ أثناء التثبيت', 'error');
-            }
-        }
-
-        function dismissInstall() {
-            hideInstallBanner();
-            localStorage.setItem('pwa-install-dismissed', 'true');
-            showNotification('يمكنك تثبيت التطبيق لاحقاً من إعدادات المتصفح', 'info');
-        }
-
-        // Check if app is running in standalone mode (installed)
-        function isRunningStandalone() {
-            return (window.matchMedia('(display-mode: standalone)').matches) ||
-                   (window.navigator.standalone) ||
-                   document.referrer.includes('android-app://');
-        }
-
-        // Handle online/offline status
-        function updateOnlineStatus() {
-            const isOnline = navigator.onLine;
-            const statusElement = document.querySelector('.status-indicator');
-            
-            if (statusElement) {
-                if (isOnline) {
-                    statusElement.textContent = 'متصل';
-                    statusElement.className = 'status-indicator status-online';
-                } else {
-                    statusElement.textContent = 'غير متصل';
-                    statusElement.className = 'status-indicator status-offline';
-                }
-            }
-            
-            if (!isOnline) {
-                showNotification('التطبيق يعمل بدون اتصال', 'warning');
-            }
-        }
-
-        // Listen for online/offline events
-        window.addEventListener('online', updateOnlineStatus);
-        window.addEventListener('offline', updateOnlineStatus);
-
-        // Initialize online status
-        document.addEventListener('DOMContentLoaded', () => {
-            updateOnlineStatus();
-            
-            // Check if running as installed app
-            if (isRunningStandalone()) {
-                console.log('🎉 التطبيق يعمل كتطبيق مثبت');
-                document.body.classList.add('standalone-app');
-            }
-        });
-
-        console.log('تطبيق المحامين جاهز للاستخدام');
     </script>
 </body>
 </html>
