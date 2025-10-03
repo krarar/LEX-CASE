@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://your-username.github.io/LEX-CASE-main/sitemap.xml
+
+# Disallow access to sensitive files
+Disallow: /firebase-debug.log
+Disallow: /.env
+Disallow: /node_modules/

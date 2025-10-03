@@ -1,0 +1,22 @@
+baseURL: ""
+title: "تطبيق المحامين - مجموعة السيد أسامة القانونية"
+description: "تطبيق ويب تقدمي لإدارة القضايا القانونية"
+theme: minimal-mistakes-jekyll
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Exclude from processing
+exclude:
+  - node_modules
+  - package.json
+  - package-lock.json
+  - .gitignore
+  - README.md
+
+# Include PWA files
+include:
+  - manifest.json
+  - service-worker.js
+  - icons/

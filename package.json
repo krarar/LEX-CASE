@@ -1,0 +1,45 @@
+
+{
+  "name": "lawyer-app-osama-legal",
+  "version": "2.0.0",
+  "description": "تطبيق إدارة القضايا القانونية للمحامين - مجموعة السيد أسامة القانونية",
+  "main": "index.html",
+  "homepage": "https://your-username.github.io/LEX-CASE-main/",
+  "scripts": {
+    "start": "npx serve -s . -l 8000",
+    "dev": "npx serve -s . -l 8000",
+    "build": "echo 'No build process needed for static PWA'",
+    "test": "echo 'No tests specified'",
+    "deploy": "gh-pages -d ."
+  },
+  "keywords": [
+    "lawyer",
+    "legal",
+    "case-management",
+    "pwa",
+    "firebase",
+    "arabic",
+    "mobile-app",
+    "web-app",
+    "progressive-web-app"
+  ],
+  "author": {
+    "name": "مجموعة السيد أسامة القانونية",
+    "email": "info@osamalegal.com"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "devDependencies": {
+    "serve": "^14.2.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/LEX-CASE-main.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/LEX-CASE-main/issues"
+  }
+}
